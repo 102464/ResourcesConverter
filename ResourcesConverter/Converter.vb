@@ -17,21 +17,26 @@
     End Sub
 
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
-        Dim files As String() = IO.Directory.GetFiles(TextBox2.Text, "*.resources", IO.SearchOption.AllDirectories)
-        For Each file In files
-            Dim fileWithoutExt As String = IO.Path.GetFileNameWithoutExtension(file)
-            ListBox1.Items.Add(file)
-            Dim procinfo As New ProcessStartInfo
-            procinfo.RedirectStandardOutput = False
-            procinfo.UseShellExecute = False
-            procinfo.Arguments = """" & file & """ """ & fileWithoutExt & ".resx"""
-            procinfo.FileName = TextBox1.Text
-            Dim proc As New Process
-            proc.StartInfo = procinfo
-            proc.Start()
-            proc.WaitForExit()
-        Next
-        MsgBox("Executed conversion.", vbInformation)
+        Try
+            Dim files As String() = IO.Directory.GetFiles(TextBox2.Text, "*.resources", IO.SearchOption.AllDirectories)
+            For Each file In files
+                Dim fileWithoutExt As String = IO.Path.GetFileNameWithoutExtension(file)
+                Dim filepath As String = IO.Path.GetDirectoryName(file)
+                ListBox1.Items.Add(file)
+                Dim procinfo As New ProcessStartInfo
+                procinfo.RedirectStandardOutput = False
+                procinfo.UseShellExecute = False
+                procinfo.Arguments = """" & file & """ """ & filepath & "\" & fileWithoutExt & ".resx"""
+                procinfo.FileName = TextBox1.Text
+                Dim proc As New Process
+                proc.StartInfo = procinfo
+                proc.Start()
+                proc.WaitForExit()
+            Next
+            MsgBox("Executed conversion.", vbInformation)
+        Catch ex As Exception
+            MsgBox("Error occurred: " & ex.Message, vbCritical)
+        End Try
     End Sub
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
