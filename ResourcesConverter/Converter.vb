@@ -26,6 +26,7 @@
                 Dim procinfo As New ProcessStartInfo
                 procinfo.RedirectStandardOutput = False
                 procinfo.UseShellExecute = False
+                procinfo.CreateNoWindow = True
                 procinfo.Arguments = """" & file & """ """ & filepath & "\" & fileWithoutExt & ".resx"""
                 procinfo.FileName = TextBox1.Text
                 Dim proc As New Process
